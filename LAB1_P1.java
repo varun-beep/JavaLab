@@ -69,4 +69,3 @@ public class LAB1_P1 {
         obj.valid();
     }
 }
-
