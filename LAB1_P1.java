@@ -60,6 +60,7 @@ public class LAB1_P1 {
         return s;
     }
 
+    @SuppressWarnings("resource")
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your credit card number: ");
