@@ -1,4 +1,6 @@
-// Abstract class definition
+import java.util.Scanner;
+
+// Abstract class
 abstract class Robber {
     // Abstract methods
     public abstract int RowHouses(int[] houses);
@@ -8,96 +10,105 @@ abstract class Robber {
 
     // Concrete method
     public void RobbingClass() {
-        System.out.println("MScAI&ML");
+        System.out.println("MScAI&ML"); // Print
     }
 
-    // Default method
     public void MachineLearning() {
-        System.out.println("I love MachineLearning.");
+        System.out.println("I love MachineLearning."); // Print
     }
 }
 
-// Subclass implementing abstract methods
+// Subclass
 class JAVAProfessionalRobber extends Robber {
-    // Method to calculate max money for row houses
     @Override
     public int RowHouses(int[] houses) {
-        if (houses.length == 0) return 0;
-        if (houses.length == 1) return houses[0];
-
-        int[] dp = new int[houses.length];
-        dp[0] = houses[0];
-        dp[1] = Math.max(houses[0], houses[1]);
-
-        for (int i = 2; i < houses.length; i++) {
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + houses[i]);
+        if (houses.length == 0) return 0; // Empty
+        int maxMoney = 0; // Total
+        for (int i = 0; i < houses.length; i++) {
+            if (i == 0 || i == houses.length - 1 || houses[i] > houses[i - 1]) {
+                maxMoney += houses[i]; // Add
+                i++; // Skip
+            }
         }
-
-        return dp[houses.length - 1];
+        return maxMoney; // Return
     }
 
-    // Method to calculate max money for round houses
     @Override
     public int RoundHouses(int[] houses) {
-        if (houses.length == 0) return 0;
-        if (houses.length == 1) return houses[0];
-
-        return Math.max(RowHouses(java.util.Arrays.copyOfRange(houses, 0, houses.length - 1)),
-                        RowHouses(java.util.Arrays.copyOfRange(houses, 1, houses.length)));
+        if (houses.length == 0) return 0; // Empty
+        int case1 = RowHouses(java.util.Arrays.copyOfRange(houses, 0, houses.length - 1)); // Case1
+        int case2 = RowHouses(java.util.Arrays.copyOfRange(houses, 1, houses.length)); // Case2
+        return Math.max(case1, case2); // Max
     }
 
-    // Method to calculate max money for square houses
     @Override
     public int SquareHouse(int[] houses) {
-        return RowHouses(houses); // Same logic as RowHouses
+        return RowHouses(houses); // Reuse
     }
 
-    // Corrected Method for multi-type house buildings
     @Override
     public int MultiHouseBuilding(int[][] buildings) {
-        int totalMoney = 0;
-
-        // Iterate through each type of house (row in the array)
+        int totalMoney = 0; // Total
         for (int[] building : buildings) {
-            totalMoney += RowHouses(building); // Max money for each type of house
+            totalMoney += RowHouses(building); // Add
         }
-
-        return totalMoney; // Return total sum
+        return totalMoney; // Return
     }
 }
 
 // Main class
 public class LAB4 {
     public static void main(String[] args) {
-        // Create an object of JAVAProfessionalRobber
-        JAVAProfessionalRobber robber = new JAVAProfessionalRobber();
+        Scanner scanner = new Scanner(System.in); // Input
+        JAVAProfessionalRobber robber = new JAVAProfessionalRobber(); // Object
 
-        // Call concrete methods
-        robber.RobbingClass(); // Prints: MScAI&ML
-        robber.MachineLearning(); // Prints: I love MachineLearning.
+        // RowHouses input
+        System.out.println("Enter the number of row houses:"); // Prompt
+        int rowCount = scanner.nextInt(); // Read
+        int[] rowHouses = new int[rowCount]; // Array
+        System.out.println("Enter the money in each row house:"); // Prompt
+        for (int i = 0; i < rowCount; i++) {
+            rowHouses[i] = scanner.nextInt(); // Read
+        }
 
-        // Test cases
-        int[] rowHouses = {1, 2, 3, 0};
-        int[] roundHouses = {1, 2, 3, 4};
-        int[] squareHouses = {5, 10, 2, 7};
-        int[][] multiHouses = {
-            {5, 3, 8, 2},
-            {10, 12, 7, 6},
-            {4, 9, 11, 5},
-            {8, 6, 3, 7}
-        };
+        // RoundHouses input
+        System.out.println("Enter the number of round houses:"); // Prompt
+        int roundCount = scanner.nextInt(); // Read
+        int[] roundHouses = new int[roundCount]; // Array
+        System.out.println("Enter the money in each round house:"); // Prompt
+        for (int i = 0; i < roundCount; i++) {
+            roundHouses[i] = scanner.nextInt(); // Read
+        }
 
-        // Test RowHouses
-        System.out.println("RowHouses([1,2,3,0]) -> " + robber.RowHouses(rowHouses)); // Output: 4
+        // SquareHouse input
+        System.out.println("Enter the number of square houses:"); // Prompt
+        int squareCount = scanner.nextInt(); // Read
+        int[] squareHouses = new int[squareCount]; // Array
+        System.out.println("Enter the money in each square house:"); // Prompt
+        for (int i = 0; i < squareCount; i++) {
+            squareHouses[i] = scanner.nextInt(); // Read
+        }
 
-        // Test RoundHouses
-        System.out.println("RoundHouses([1,2,3,4]) -> " + robber.RoundHouses(roundHouses)); // Output: 6
+        // MultiHouseBuilding input
+        System.out.println("Enter the number of house types in the multi-type building:"); // Prompt
+        int buildingTypes = scanner.nextInt(); // Read
+        int[][] multiHouseBuilding = new int[buildingTypes][]; // Array
+        for (int i = 0; i < buildingTypes; i++) {
+            System.out.println("Enter the number of houses for type " + (i + 1) + ":"); // Prompt
+            int housesInType = scanner.nextInt(); // Read
+            multiHouseBuilding[i] = new int[housesInType]; // Array
+            System.out.println("Enter the money in each house for type " + (i + 1) + ":"); // Prompt
+            for (int j = 0; j < housesInType; j++) {
+                multiHouseBuilding[i][j] = scanner.nextInt(); // Read
+            }
+        }
 
-        // Test SquareHouse
-        System.out.println("SquareHouse([5,10,2,7]) -> " + robber.SquareHouse(squareHouses)); // Output: 17
+        // Print results
+        System.out.println("Maximum money from Row Houses: " + robber.RowHouses(rowHouses)); // Output
+        System.out.println("Maximum money from Round Houses: " + robber.RoundHouses(roundHouses)); // Output
+        System.out.println("Maximum money from Square Houses: " + robber.SquareHouse(squareHouses)); // Output
+        System.out.println("Maximum money from Multi-Type Houses: " + robber.MultiHouseBuilding(multiHouseBuilding)); // Output
 
-        // Test MultiHouseBuilding
-        System.out.println("MultiHouseBuilding([[5,3,8,2],[10,12,7,6],[4,9,11,5],[8,6,3,7]]) -> " + 
-            robber.MultiHouseBuilding(multiHouses)); // Output: 59
+        scanner.close(); // Close
     }
 }
